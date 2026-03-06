@@ -19,6 +19,13 @@ CSV network logs with the following fields:
 - `action` — firewall action: allow / deny / drop
 - `bytes` — bytes transferred (integer)
 
+## Completed functions
+- `functions/ingest.py` — `ingest(filepath)`: reads CSV, parses timestamp, prints entry count, returns DataFrame
+- `functions/filter.py` — `filter_logs(df, **kwargs)`: filters by any column using kwargs, supports single values and lists via `.isin()`, warns on invalid column names
+
+## Up next
+- `functions/summary.py` — aggregation and summary stats
+
 ## How to help me
 - Explain what a pandas method does before I use it
 - Suggest which pandas tools fit a given problem
