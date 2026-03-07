@@ -22,9 +22,16 @@ CSV network logs with the following fields:
 ## Completed functions
 - `functions/ingest.py` — `ingest(filepath)`: reads CSV, parses timestamp, prints entry count, returns DataFrame
 - `functions/filter.py` — `filter_logs(df, **kwargs)`: filters by any column using kwargs, supports single values and lists via `.isin()`, warns on invalid column names
+- `functions/summary.py` — aggregation and summary stats:
+  - `action_count(df)`: returns value counts of firewall actions (allow/deny/drop)
+  - `top_talkers(df, n=10)`: returns top N src_ips by total bytes transferred
+  - `top_dst_ports(df, n=10)`: returns top N destination ports by connection count
+  - `flag_high_traffic(df, threshold=2)`: flags src_ips with bytes > mean + (threshold * std) — statistical anomaly detection
 
 ## Up next
-- `functions/summary.py` — aggregation and summary stats
+- `functions/report.py` — combine summary functions into a single analyst report output
+- Time-based analysis — traffic volume over time using `resample()` or time-period `groupby`
+- Cross-referencing — flag IPs with both high traffic AND high deny/drop rate (stronger anomaly signal)
 
 ## How to help me
 - Explain what a pandas method does before I use it
