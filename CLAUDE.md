@@ -27,9 +27,9 @@ CSV network logs with the following fields:
   - `top_talkers(df, n=10)`: returns top N src_ips by total bytes transferred
   - `top_dst_ports(df, n=10)`: returns top N destination ports by connection count
   - `flag_high_traffic(df, threshold=2)`: flags src_ips with bytes > mean + (threshold * std) — statistical anomaly detection
+- `functions/report.py` — `generate_report(df)`: calls all summary functions, writes a timestamped `.txt` report to `reports/`, returns filepath
 
 ## Up next
-- `functions/report.py` — combine summary functions into a single analyst report output
 - Time-based analysis — traffic volume over time using `resample()` or time-period `groupby`
 - Cross-referencing — flag IPs with both high traffic AND high deny/drop rate (stronger anomaly signal)
 
