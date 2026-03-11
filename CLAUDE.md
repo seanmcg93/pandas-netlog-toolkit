@@ -16,22 +16,23 @@ CSV network logs with the following fields:
 - `src_ip` — source IP address
 - `dst_ip` — destination IP address
 - `dst_port` — destination port number (integer)
-- `action` — firewall action: allow / deny / drop
+- `action` — firewall action: allow / block
 - `bytes` — bytes transferred (integer)
 
 ## Completed functions
 - `functions/ingest.py` — `ingest(filepath)`: reads CSV, parses timestamp, prints entry count, returns DataFrame
 - `functions/filter.py` — `filter_logs(df, **kwargs)`: filters by any column using kwargs, supports single values and lists via `.isin()`, warns on invalid column names
 - `functions/summary.py` — aggregation and summary stats:
-  - `action_count(df)`: returns value counts of firewall actions (allow/deny/drop)
+  - `action_count(df)`: returns value counts of firewall actions (allow/block)
   - `top_talkers(df, n=10)`: returns top N src_ips by total bytes transferred
   - `top_dst_ports(df, n=10)`: returns top N destination ports by connection count
   - `flag_high_traffic(df, threshold=2)`: flags src_ips with bytes > mean + (threshold * std) — statistical anomaly detection
+  - `traffic_over_time(df, freq='5min')`: resamples traffic into time buckets, returns total_bytes and total_connections per window — useful for spotting spikes during IR
+  - `cross_reference(df, traffic_threshold=2, deny_threshold=0.2)`: flags src_ips with both high traffic volume AND high block rate — stronger anomaly signal for IR
 - `functions/report.py` — `generate_report(df)`: calls all summary functions, writes a timestamped `.txt` report to `reports/`, returns filepath
 
 ## Up next
-- Time-based analysis — traffic volume over time using `resample()` or time-period `groupby`
-- Cross-referencing — flag IPs with both high traffic AND high deny/drop rate (stronger anomaly signal)
+- Update `report.py` to include `traffic_over_time` and `cross_reference` in generated reports
 
 ## How to help me
 - Explain what a pandas method does before I use it
