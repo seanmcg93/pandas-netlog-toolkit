@@ -10,4 +10,5 @@ build/
 .env
 .idea/
 reports/
+plots/
 functions/test.py

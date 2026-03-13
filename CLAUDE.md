@@ -29,10 +29,14 @@ CSV network logs with the following fields:
   - `flag_high_traffic(df, threshold=2)`: flags src_ips with bytes > mean + (threshold * std) — statistical anomaly detection
   - `traffic_over_time(df, freq='5min')`: resamples traffic into time buckets, returns total_bytes and total_connections per window — useful for spotting spikes during IR
   - `cross_reference(df, traffic_threshold=2, deny_threshold=0.2)`: flags src_ips with both high traffic volume AND high block rate — stronger anomaly signal for IR
-- `functions/report.py` — `generate_report(df)`: calls all summary functions, writes a timestamped `.txt` report to `reports/`, returns filepath
+- `functions/report.py` — `generate_report(df)`: calls all summary functions including `traffic_over_time` and `cross_reference`, writes a timestamped `.txt` report to `reports/`, returns filepath
+- `functions/visualize.py` — plotting functions using `matplotlib`:
+  - `plot_traffic_over_time(df, freq='5min', save=False)`: dual subplot line chart of total_bytes and total_connections over time, optionally saves to `plots/`
 
 ## Up next
-- Update `report.py` to include `traffic_over_time` and `cross_reference` in generated reports
+- Add bar chart functions to `functions/visualize.py`
+  - Bar chart for `top_talkers` (top src_ips by bytes)
+  - Bar chart for `top_dst_ports` (top ports by connection count)
 
 ## How to help me
 - Explain what a pandas method does before I use it

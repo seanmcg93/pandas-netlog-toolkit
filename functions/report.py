@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from functions import action_count, top_talkers, top_dst_ports, flag_high_traffic
+from functions import action_count, top_talkers, top_dst_ports, flag_high_traffic, cross_reference, traffic_over_time
 
 
 def generate_report(df):
@@ -14,6 +14,8 @@ def generate_report(df):
     talkers = top_talkers(df).to_string()
     ports = top_dst_ports(df).to_string()
     flagged = flag_high_traffic(df).to_string()
+    flagged_high_droprate = cross_reference(df).to_string()
+    traffic_time = traffic_over_time(df).to_string()
     filepath = os.path.join(reports_dir, report)
 
     lines = ["Number of Allowed and Blocked Packets:\n"+count+"\n",
@@ -22,7 +24,12 @@ def generate_report(df):
              "========================================================\n",
              "Top 10 Most Used Ports:\n"+ports+"\n",
              "========================================================\n",
-             "Flagged Source IPs:\n"+flagged+"\n",]
+             "Flagged Source IPs:\n"+flagged+"\n",
+             "========================================================\n",
+             "Flagged with Drop Rate over 20%:\n"+flagged_high_droprate+"\n",
+             "========================================================\n",
+             "Traffic over Time:\n"+traffic_time+"\n",
+             "========================================================\n"]
 
     with open(filepath, "w") as file:
        file.writelines(lines)

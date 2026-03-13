@@ -35,11 +35,6 @@ def cross_reference(df, traffic_threshold=2, deny_threshold=0.2):
     return df
 
 
-
-
-
-
-
 def traffic_over_time(df, freq="5min"):
     resample = df.set_index("timestamp").resample(freq).agg({"bytes":"sum", "action": "count"}).rename(columns={"bytes":"total_bytes","action":"total_connections"})
     return resample
