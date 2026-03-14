@@ -32,11 +32,11 @@ CSV network logs with the following fields:
 - `functions/report.py` — `generate_report(df)`: calls all summary functions including `traffic_over_time` and `cross_reference`, writes a timestamped `.txt` report to `reports/`, returns filepath
 - `functions/visualize.py` — plotting functions using `matplotlib`:
   - `plot_traffic_over_time(df, freq='5min', save=False)`: dual subplot line chart of total_bytes and total_connections over time, optionally saves to `plots/`
+  - `plot_top_talkers(df, save=False)`: bar chart of top src_ips by total bytes, optionally saves to `plots/`
+  - `plot_top_dst_ports(df, save=False)`: bar chart of top destination ports by connection count, optionally saves to `plots/`
 
 ## Up next
-- Add bar chart functions to `functions/visualize.py`
-  - Bar chart for `top_talkers` (top src_ips by bytes)
-  - Bar chart for `top_dst_ports` (top ports by connection count)
+- Update `generate_report(df)` in `functions/report.py` to call all three plot functions with `save=True`, embedding chart filepaths into the report output — gives IR analysts a full text + visual starting point
 
 ## How to help me
 - Explain what a pandas method does before I use it
