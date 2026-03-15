@@ -29,14 +29,22 @@ CSV network logs with the following fields:
   - `flag_high_traffic(df, threshold=2)`: flags src_ips with bytes > mean + (threshold * std) — statistical anomaly detection
   - `traffic_over_time(df, freq='5min')`: resamples traffic into time buckets, returns total_bytes and total_connections per window — useful for spotting spikes during IR
   - `cross_reference(df, traffic_threshold=2, deny_threshold=0.2)`: flags src_ips with both high traffic volume AND high block rate — stronger anomaly signal for IR
-- `functions/report.py` — `generate_report(df)`: calls all summary functions including `traffic_over_time` and `cross_reference`, writes a timestamped `.txt` report to `reports/`, returns filepath
+- `functions/report.py` — `generate_report(df, freq='5min')`: calls all summary and plot functions, writes a timestamped `.txt` report to `reports/` with embedded plot filepaths, returns filepath
 - `functions/visualize.py` — plotting functions using `matplotlib`:
   - `plot_traffic_over_time(df, freq='5min', save=False)`: dual subplot line chart of total_bytes and total_connections over time, optionally saves to `plots/`
   - `plot_top_talkers(df, save=False)`: bar chart of top src_ips by total bytes, optionally saves to `plots/`
   - `plot_top_dst_ports(df, save=False)`: bar chart of top destination ports by connection count, optionally saves to `plots/`
 
 ## Up next
-- Update `generate_report(df)` in `functions/report.py` to call all three plot functions with `save=True`, embedding chart filepaths into the report output — gives IR analysts a full text + visual starting point
+- `detect_port_scan(df)` in `functions/summary.py` — flag src_ips hitting many distinct ports in a short time window, classic recon behavior
+- `detect_beaconing(df)` in `functions/summary.py` — find src_ips making connections at suspiciously regular intervals, C2 indicator
+- `geo_lookup(df)` in `functions/summary.py` — enrich src/dst IPs with country data using a library like `geoip2`
+
+## Future improvements
+- **Time range filtering** — add `filter_by_timerange(df, start, end)` to `functions/filter.py`
+- **CLI interface** — `argparse`-based `main.py` so the toolkit can be run from terminal (e.g. `python main.py --report --freq 1h`)
+- **Data quality** — handle malformed rows in `ingest.py` (missing `bytes`, bad timestamps, etc.) and add input validation to functions
+- **`main.py`** — tie everything together so ingest, filter, and report run end to end with one command
 
 ## How to help me
 - Explain what a pandas method does before I use it

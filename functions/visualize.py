@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 from datetime import datetime
-from functions import traffic_over_time, top_talkers, top_dst_ports
+from functions.summary import  traffic_over_time, top_talkers, top_dst_ports
 
 
 def plot_traffic_over_time(df, freq='5min', save=False):
