@@ -40,5 +40,19 @@ def traffic_over_time(df, freq="5min"):
     return resample
 
 
+def detect_beaconing(df, min_connections=5, interval_std_threshold=5.0):
+    grouped = df.sort_values('timestamp').groupby(['src_ip', 'dst_ip'])
+    df['time_delta'] = grouped['timestamp'].diff().dt.total_seconds()
+    stats = df.sort_values('timestamp').groupby(['src_ip', 'dst_ip']).agg({"time_delta": "std", "action": "count"})
+    min_conns = stats[stats["action"] >= min_connections]
+    beaconing = min_conns[min_conns["time_delta"] <= interval_std_threshold]
+    return beaconing
+
+
+
+
+
+
+
 
 
