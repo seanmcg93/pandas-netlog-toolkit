@@ -1,14 +1,4 @@
-# CLAUDE.md — Context for AI-assisted learning sessions
-
-## About me
-- I am still learning Python — guide and hint, do not write code for me
-- I am a network analyst learning pandas for log analysis
-- Teaching style: explain concepts, suggest ideas, let me implement
-
-## Current skill level
-- Comfortable with list comprehensions, f-strings, basic pandas filtering
-- Familiar with groupby and value_counts
-- Building deeper pandas knowledge through this project
+# CLAUDE.md — Project context
 
 ## Log data format
 CSV network logs with the following fields:
@@ -41,17 +31,10 @@ Primary use case is **Incident Response (IR)** — built for triage under time p
 
 ## Up next (IR-priority order)
 1. `detect_port_scan(df)` in `functions/summary.py` — flag src_ips hitting many distinct ports in a short time window, classic recon behavior
-2. **CLI interface** — `argparse`-based `main.py` so the toolkit can be run from terminal (e.g. `python main.py --report --freq 1h`) — critical for IR so analysts aren't dropping into a REPL under pressure
+2. **CLI interface** — `argparse`-based `main.py` so the toolkit can be run from terminal (e.g. `python main.py --report --freq 1h`) — critical for IR so analysts aren't dropping into a REPL under pressure; integrate `rich` for colored terminal output, formatted tables, and highlighted anomalies (e.g. red for beaconing, yellow for high traffic)
 3. `geo_lookup(df)` in `functions/summary.py` — enrich src/dst IPs with country data using a library like `geoip2` — useful for reporting, not urgent for triage
 
 ## Future improvements
 - **Time range filtering** — add `filter_by_timerange(df, start, end)` to `functions/filter.py`
 - **Data quality** — handle malformed rows in `ingest.py` (missing `bytes`, bad timestamps, etc.) — important for IR where logs may come from multiple messy sources
 
-## How to help me
-- Explain what a pandas method does before I use it
-- Suggest which pandas tools fit a given problem
-- Ask me questions to guide my thinking
-- Only show code snippets if I'm truly stuck and ask for one
-- Remind me of relevant pandas docs or methods I might not know yet
-- Celebrate progress — this is a learning journey
