@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def action_count(df):
@@ -47,6 +48,16 @@ def detect_beaconing(df, min_connections=5, interval_std_threshold=5.0):
     min_conns = stats[stats["action"] >= min_connections]
     beaconing = min_conns[min_conns["time_delta"] <= interval_std_threshold]
     return beaconing
+
+
+def detect_port_scan(df, freq="1min", port_hits=10):
+    resample = df.groupby(["src_ip", pd.Grouper(key="timestamp", freq=freq)])
+    port_counts = resample["dst_port"].nunique()
+    flag_port_scanning = port_counts[port_counts >= port_hits]
+    return flag_port_scanning
+
+
+
 
 
 

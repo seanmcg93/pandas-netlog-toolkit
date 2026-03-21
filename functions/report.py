@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 
 from functions.summary import  action_count, top_talkers, top_dst_ports, flag_high_traffic, cross_reference, traffic_over_time
+from functions.summary import detect_beaconing, detect_port_scan
 from functions.visualize import  plot_top_talkers, plot_top_dst_ports, plot_traffic_over_time
 
 
@@ -20,6 +21,8 @@ def generate_report(df, freq="5min"):
     flagged_high_droprate = cross_reference(df).to_string()
     traffic_time = traffic_over_time(df, freq).to_string()
     plot_traffic_path = plot_traffic_over_time(df, freq, save=True)
+    posible_beaconing = detect_beaconing(df).to_string()
+    possible_portscan = detect_port_scan(df).to_string()
     filepath = os.path.join(reports_dir, report)
 
     lines = ["Number of Allowed and Blocked Packets:\n"+count+"\n",
@@ -36,7 +39,10 @@ def generate_report(df, freq="5min"):
              "========================================================\n",
              "Traffic over Time:\n"+traffic_time+"\n",
              f"Plot can be found at:\n{plot_traffic_path}\n",
-             "========================================================\n"]
+             "========================================================\n",
+             "Possible Ips Beaconing:\n"+posible_beaconing+"\n",
+             "========================================================\n",
+             "Possible Port Scanning:\n"+possible_portscan+"\n"]
 
     with open(filepath, "w") as file:
        file.writelines(lines)
