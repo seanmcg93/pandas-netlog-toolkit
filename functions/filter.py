@@ -2,7 +2,7 @@ def filter_logs(df, **kwargs):
     for key, value in kwargs.items():
 
         if key in df.columns:
-            if type(value) != list:
+            if not isinstance(value, list):
                 df = df[df[key] == value]
             else:
                 df = df[df[key].isin(value)]
